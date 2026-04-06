@@ -29,4 +29,15 @@ const getAllEmployees = async (req, res) => {
   }
 };
 
-module.exports = { createEmployee, getAllEmployees };
+const getEmployeeById = async (req, res) => {
+  try {
+    const employee = await employeeService.getEmployeeById(req.params.id);
+    if (!employee) return sendError(res, "Employee not found", 404);
+    sendSuccess(res, employee, "Employee fetched successfully");
+  } catch (err) {
+    console.error(err);
+    sendError(res, "Failed to fetch employee", 500);
+  }
+};
+
+module.exports = { createEmployee, getAllEmployees, getEmployeeById };

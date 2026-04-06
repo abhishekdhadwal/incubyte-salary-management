@@ -1,4 +1,4 @@
-const { body, query } = require("express-validator");
+const { body, query, param } = require("express-validator");
 
 const employeeValidationRules = [
   body("fullName").notEmpty().withMessage("fullName is required"),
@@ -20,4 +20,12 @@ const paginationValidationRules = [
     .withMessage("offset must be a non-negative integer"),
 ];
 
-module.exports = { employeeValidationRules, paginationValidationRules };
+const idValidationRule = [
+  param("id").isInt({ min: 1 }).withMessage("id must be a positive integer"),
+];
+
+module.exports = {
+  employeeValidationRules,
+  paginationValidationRules,
+  idValidationRule,
+};
