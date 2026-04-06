@@ -123,3 +123,28 @@ describe("PUT /employees/:id", () => {
     expect(res.body.message).toBe("Employee not found");
   });
 });
+
+describe("DELETE /employees/:id", () => {
+  it("should delete an existing employee", async () => {
+    const created = await request(app).post("/employees").send({
+      fullName: "To Delete",
+      jobTitle: "Temp",
+      country: "India",
+      salary: 30000,
+    });
+
+    const res = await request(app).delete(`/employees/${created.body.data.id}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Employee deleted successfully");
+  });
+
+  it("should return 404 if employee not found", async () => {
+    const res = await request(app).delete("/employees/99999");
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Employee not found");
+  });
+});
