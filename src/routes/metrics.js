@@ -1,12 +1,10 @@
 const express = require("express");
-const {
-  getSalaryStatsByCountry,
-  getAverageSalaryByJobTitle,
-} = require("../controllers/metricsController");
+const { getMetrics } = require("../controllers/metricsController");
+const metricsValidationRules = require("../validators/metricsValidator");
+const validate = require("../middleware/validate");
 
 const router = express.Router();
 
-router.get("/country/:country", getSalaryStatsByCountry);
-router.get("/job-title/:jobTitle", getAverageSalaryByJobTitle);
+router.get("/", metricsValidationRules, validate, getMetrics);
 
 module.exports = router;

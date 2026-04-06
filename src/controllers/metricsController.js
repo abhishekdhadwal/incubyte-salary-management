@@ -1,32 +1,25 @@
 const metricsService = require("../services/metricsService");
 const { sendSuccess, sendError } = require("../utils/responseHandler");
 
-const getSalaryStatsByCountry = async (req, res) => {
+const getMetrics = async (req, res) => {
   try {
-    const result = await metricsService.getSalaryStatsByCountry(
-      req.params.country,
-    );
-    if (!result)
-      return sendError(res, "No employees found for this country", 404);
-    sendSuccess(res, result, "Salary stats fetched successfully");
-  } catch (err) {
-    console.error(err);
-    sendError(res, "Failed to fetch salary stats", 500);
-  }
-};
+    const { country, jobTitle } = req.query;
 
-const getAverageSalaryByJobTitle = async (req, res) => {
-  try {
-    const result = await metricsService.getAverageSalaryByJobTitle(
-      req.params.jobTitle,
-    );
+    if (country) {
+      const result = await metricsService.getSalaryStatsByCountry(country);
+      if (!result)
+        return sendError(res, "No employees found for this country", 404);
+      return sendSuccess(res, result, "Salary stats fetched successfully");
+    }
+
+    const result = await metricsService.getAverageSalaryByJobTitle(jobTitle);
     if (!result)
       return sendError(res, "No employees found for this job title", 404);
-    sendSuccess(res, result, "Average salary fetched successfully");
+    return sendSuccess(res, result, "Average salary fetched successfully");
   } catch (err) {
     console.error(err);
-    sendError(res, "Failed to fetch average salary", 500);
+    sendError(res, "Failed to fetch metrics", 500);
   }
 };
 
-module.exports = { getSalaryStatsByCountry, getAverageSalaryByJobTitle };
+module.exports = { getMetrics };
