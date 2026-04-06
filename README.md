@@ -35,9 +35,18 @@ index.js                # Entry point
 # Install dependencies
 npm install
 
-# Copy env file
+# Create your .env file
 cp .env.example .env
+```
 
+**.env variables:**
+
+```
+PORT=3000
+DB_PATH=./salary.db
+```
+
+```bash
 # Start server
 npm start
 ```
