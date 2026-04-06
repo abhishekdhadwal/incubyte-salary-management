@@ -76,3 +76,50 @@ describe("GET /employees/:id", () => {
     expect(res.body.message).toBe("Employee not found");
   });
 });
+
+describe("PUT /employees/:id", () => {
+  it("should update an existing employee", async () => {
+    const created = await request(app).post("/employees").send({
+      fullName: "Bob Smith",
+      jobTitle: "Manager",
+      country: "India",
+      salary: 70000,
+    });
+
+    const res = await request(app)
+      .put(`/employees/${created.body.data.id}`)
+      .send({
+        fullName: "Bob Smith",
+        jobTitle: "Senior Manager",
+        country: "India",
+        salary: 80000,
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.data.jobTitle).toBe("Senior Manager");
+    expect(res.body.data.salary).toBe(80000);
+  });
+
+  it("should return 400 if required fields are missing", async () => {
+    const res = await request(app).put("/employees/1").send({
+      fullName: "Bob Smith",
+    });
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+  });
+
+  it("should return 404 if employee not found", async () => {
+    const res = await request(app).put("/employees/99999").send({
+      fullName: "Ghost",
+      jobTitle: "Nobody",
+      country: "India",
+      salary: 1000,
+    });
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Employee not found");
+  });
+});
