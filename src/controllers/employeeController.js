@@ -17,4 +17,14 @@ const createEmployee = async (req, res) => {
   }
 };
 
-module.exports = { createEmployee };
+const getAllEmployees = async (req, res) => {
+  try {
+    const employees = await employeeService.getAllEmployees();
+    sendSuccess(res, employees, "Employees fetched successfully");
+  } catch (err) {
+    console.error(err);
+    sendError(res, "Failed to fetch employees", 500);
+  }
+};
+
+module.exports = { createEmployee, getAllEmployees };

@@ -4,4 +4,8 @@ const createEmployee = async ({ fullName, jobTitle, country, salary }) => {
   return await Employee.create({ fullName, jobTitle, country, salary });
 };
 
-module.exports = { createEmployee };
+const getAllEmployees = async () => {
+  return await Employee.findAll();
+};
+
+module.exports = { createEmployee, getAllEmployees };
