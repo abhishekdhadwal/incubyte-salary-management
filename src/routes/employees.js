@@ -4,6 +4,7 @@ const {
   getAllEmployees,
   getEmployeeById,
   updateEmployee,
+  deleteEmployee,
 } = require("../controllers/employeeController");
 const {
   employeeValidationRules,
@@ -24,5 +25,6 @@ router.put(
   validate,
   updateEmployee,
 );
+router.delete("/:id", idValidationRule, validate, deleteEmployee);
 
 module.exports = router;

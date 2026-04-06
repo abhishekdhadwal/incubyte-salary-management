@@ -19,9 +19,17 @@ const updateEmployee = async (id, { fullName, jobTitle, country, salary }) => {
   return await employee.update({ fullName, jobTitle, country, salary });
 };
 
+const deleteEmployee = async (id) => {
+  const employee = await Employee.findByPk(id);
+  if (!employee) return null;
+  await employee.destroy();
+  return true;
+};
+
 module.exports = {
   createEmployee,
   getEmployeeById,
   getAllEmployees,
   updateEmployee,
+  deleteEmployee,
 };
