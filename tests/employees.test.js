@@ -51,3 +51,28 @@ describe("GET /employees", () => {
     expect(res.body.data).toHaveProperty("offset");
   });
 });
+
+describe("GET /employees/:id", () => {
+  it("should return a single employee by id", async () => {
+    const created = await request(app).post("/employees").send({
+      fullName: "Jane Doe",
+      jobTitle: "Designer",
+      country: "United States",
+      salary: 60000,
+    });
+
+    const res = await request(app).get(`/employees/${created.body.data.id}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.data.fullName).toBe("Jane Doe");
+  });
+
+  it("should return 404 if employee not found", async () => {
+    const res = await request(app).get("/employees/99999");
+
+    expect(res.status).toBe(404);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Employee not found");
+  });
+});
