@@ -3,12 +3,15 @@ const {
   createEmployee,
   getAllEmployees,
 } = require("../controllers/employeeController");
-const employeeValidationRules = require("../validators/employeeValidator");
+const {
+  employeeValidationRules,
+  paginationValidationRules,
+} = require("../validators/employeeValidator");
 const validate = require("../middleware/validate");
 
 const router = express.Router();
 
-router.get("/", getAllEmployees);
+router.get("/", paginationValidationRules, validate, getAllEmployees);
 router.post("/", employeeValidationRules, validate, createEmployee);
 
 module.exports = router;

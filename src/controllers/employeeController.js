@@ -19,8 +19,10 @@ const createEmployee = async (req, res) => {
 
 const getAllEmployees = async (req, res) => {
   try {
-    const employees = await employeeService.getAllEmployees();
-    sendSuccess(res, employees, "Employees fetched successfully");
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = parseInt(req.query.offset) || 0;
+    const result = await employeeService.getAllEmployees({ limit, offset });
+    sendSuccess(res, result, "Employees fetched successfully");
   } catch (err) {
     console.error(err);
     sendError(res, "Failed to fetch employees", 500);
