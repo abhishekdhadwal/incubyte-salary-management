@@ -3,8 +3,8 @@ const { createApp } = require("../src/app");
 
 let app;
 
-beforeAll(() => {
-  app = createApp();
+beforeAll(async () => {
+  app = await createApp();
 });
 
 describe("POST /employees", () => {
@@ -17,13 +17,15 @@ describe("POST /employees", () => {
     });
 
     expect(res.status).toBe(201);
-    expect(res.body).toMatchObject({
+    expect(res.body.success).toBe(true);
+    expect(res.body.message).toBe("Employee created successfully");
+    expect(res.body.data).toMatchObject({
       fullName: "John Doe",
       jobTitle: "Engineer",
       country: "India",
       salary: 50000,
     });
-    expect(res.body.id).toBeDefined();
+    expect(res.body.data.id).toBeDefined();
   });
 
   it("should return 400 if required fields are missing", async () => {
@@ -32,5 +34,7 @@ describe("POST /employees", () => {
     });
 
     expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.message).toBe("Validation failed");
   });
 });
