@@ -40,4 +40,26 @@ const getEmployeeById = async (req, res) => {
   }
 };
 
-module.exports = { createEmployee, getAllEmployees, getEmployeeById };
+const updateEmployee = async (req, res) => {
+  try {
+    const { fullName, jobTitle, country, salary } = req.body;
+    const employee = await employeeService.updateEmployee(req.params.id, {
+      fullName,
+      jobTitle,
+      country,
+      salary,
+    });
+    if (!employee) return sendError(res, "Employee not found", 404);
+    sendSuccess(res, employee, "Employee updated successfully");
+  } catch (err) {
+    console.error(err);
+    sendError(res, "Failed to update employee", 500);
+  }
+};
+
+module.exports = {
+  createEmployee,
+  getAllEmployees,
+  getEmployeeById,
+  updateEmployee,
+};

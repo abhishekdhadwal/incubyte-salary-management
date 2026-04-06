@@ -13,4 +13,15 @@ const getAllEmployees = async ({ limit, offset }) => {
   return { employees: rows, total: count, limit, offset };
 };
 
-module.exports = { createEmployee, getEmployeeById, getAllEmployees };
+const updateEmployee = async (id, { fullName, jobTitle, country, salary }) => {
+  const employee = await Employee.findByPk(id);
+  if (!employee) return null;
+  return await employee.update({ fullName, jobTitle, country, salary });
+};
+
+module.exports = {
+  createEmployee,
+  getEmployeeById,
+  getAllEmployees,
+  updateEmployee,
+};
